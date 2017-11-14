@@ -11,14 +11,19 @@ import java.util.ArrayList;
 @Mapper
 public interface UserMapper {
 
-    String GET_ALL__ACTIVE_USERS = "SELECT * FROM `mybatis-test`.Users where isActive = 1";
-    String GET_BY_ID = "SELECT * FROM `mybatis-test`.Users where id = #{id}";
-    String INSERT_USER = "INSERT INTO `mybatis-test`.Users (first_name, last_name, isActive) " +
+    String GET_ALL__ACTIVE_USERS = "SELECT * FROM `second_rds`.users where isActive = 1";
+    String GET_BY_ID = "SELECT * FROM `second_rds`.users where id = #{id}";
+    String INSERT_USER = "INSERT INTO `second_rds`.users (first_name, last_name, isActive) " +
             "VALUES (#{first_name}, #{last_name}, #{isActive})";
-    String UPDATE_USER = "UPDATE `mybatis-test`.Users SET first_name = #{first_name}, " +
+    String UPDATE_USER = "UPDATE `second_rds`.users SET first_name = #{first_name}, " +
             "last_name = #{last_name}, isActive = #{isActive} WHERE id = #{id}";
-    String DELETE_USER = "UPDATE `mybatis-test`.Users set isActive = 0 WHERE id = #{id}";
-    String GET_BY_NAME = "SELECT * FROM `mybatis-test`.Users where first_name = #{first_name}";
+    String DELETE_USER = "UPDATE `second_rds`.users set isActive = 0 WHERE id = #{id}";
+    String GET_BY_NAME = "SELECT * FROM `second_rds`.users where first_name = #{first_name}";
+
+    String CHECK_SECTION_EXISTS = "" +
+            "select id from `second_rds`.users " +
+            "where id = #{id} " +
+            "limit 1";
 
     @Select(GET_BY_NAME)
     public User getByName(String name);
@@ -28,6 +33,9 @@ public interface UserMapper {
 
     @Select(GET_BY_ID)
     public User getByID(int id);
+
+    @Select(CHECK_SECTION_EXISTS)
+    public int checkIfSectionExists(int id);
 
     @Insert(INSERT_USER)
     public int insertUser (User user);

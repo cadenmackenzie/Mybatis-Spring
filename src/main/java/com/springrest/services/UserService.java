@@ -1,5 +1,6 @@
 package com.springrest.services;
 
+import com.springrest.exceptions.InvalidRequestException;
 import com.springrest.mappers.UserMapper;
 import com.springrest.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,14 @@ public class UserService {
     }
 
     //get user by id
-    public User getById(int id){
+    public User getById(int id) throws InvalidRequestException{
+
+        try {
+            int tempId = userMapper.checkIfSectionExists(id);
+        } catch (Exception npe){
+            throw new InvalidRequestException("Unknown section: " + id, 400);
+
+        }
         return userMapper.getByID(id);
     }
 
